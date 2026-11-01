@@ -1,76 +1,144 @@
-============================================================
-ITML601 - Advanced AI and NLP
-Assignment 1: Search and Adversarial Search in Pacman
-------------------------------------------------------------
-Team members:
-  [Sughra Hassan ] - [20165579 ]
-  [Maryam Wael] - [20174867]
-  [Qabas Elayan] - [20174119]
+# ITML601 — Advanced AI & NLP
+## Assignment 1: Search & Adversarial Search in the Pacman Environment
 
-Date: [1 - 11 - 2026]
-============================================================
 
-CONTENTS OF THIS SUBMISSION
-------------------------------------------------------------
-  search.py         - DFS, BFS, UCS, A* graph search (Part A, Q1-Q4)
-  searchAgents.py   - CornersProblem, cornersHeuristic, foodHeuristic,
-                      ClosestDotSearchAgent (Part A, Q5-Q8)
-  multiAgents.py    - MinimaxAgent, AlphaBetaAgent, ExpectimaxAgent,
-                      betterEvaluationFunction (Part B, Q2-Q5)
+**Classic and adversarial search algorithms implemented, experimentally evaluated, and reported in the Berkeley Pacman framework.**
 
-TESTED ENVIRONMENT
-------------------------------------------------------------
-  Python 3.12, Windows 11
-  Berkeley CS188 Pacman projects (sp24): Project 1 + Project 2
-  (kept in separate folders, as required)
+---
 
-AUTOGRADER SCORES OBTAINED (python autograder.py --no-graphics)
-------------------------------------------------------------
+## 👥 Team Members
 
-PART A - SEARCH (folder: search)
-  Question q1 (DFS):                3/3
-  Question q2 (BFS):                3/3
-  Question q3 (UCS):                3/3
-  Question q4 (A*):                 3/3
-  Question q5 (CornersProblem):     3/3
-  Question q6 (cornersHeuristic):   3/3   (heuristic: 393 nodes on mediumCorners)
-  Question q7 (foodHeuristic):        5/4   EXTRA CREDIT
-                                    (410 nodes on trickySearch; thresholds 15000/12000/9000/7000)
-  Question q8 (ClosestDotSearchAgent): 3/3
+| Name | Student ID | Main Contribution |
+|---|---|---|
+| Sughra Hassan  | 20165579| DFS, BFS, UCS, A* (`search.py`); Table T1 experiments ,  MST `foodHeuristic`, `ClosestDotSearchAgent` (`searchAgents.py`) , Minimax ,Table T3 experiments ;| 
+| Maryam Wael | 20174867 | `CornersProblem`, `cornersHeuristic` (`searchAgents.py`); Table T2 |
+| [Name 3] | [ID] | Minimax, α-β, Expectimax, evaluation function (`multiAgents.py`); Tables T3–T5 |
 
-PART B - MULTI-AGENT SEARCH (folder: multiagent)
-  Question q1 (ReflexAgent):        warmup - not graded (left as provided)
-  Question q2 (MinimaxAgent):       5/5
-  Question q3 (AlphaBetaAgent):     5/5
-  Question q4 (ExpectimaxAgent):    5/5
-  Question q5 (betterEvaluationFunction): 6/6
-                                    (10/10 wins, average score 1123.5 on smallClassic)
+&gt; 📄 Full contribution statement: see `report.pdf`
 
-HOW TO REPRODUCE
-------------------------------------------------------------
-Search tests (run from the 'search' folder):
-  python autograder.py -q q1 --no-graphics
-  ...
-  python autograder.py --no-graphics
+---
 
-Multi-agent tests (run from the 'multiagent' folder):
-  python autograder.py --no-graphics
+## 📁 Repository Contents
 
-Sample visual runs:
-  python pacman.py -l bigMaze -p SearchAgent -a fn=astar,heuristic=manhattanHeuristic -z .5
-  python pacman.py -l mediumCorners -p AStarCornersAgent -z .5
-  python pacman.py -l trickySearch -p AStarFoodSearchAgent -q
-  python pacman.py -p AlphaBetaAgent -l minimaxClassic -a depth=3 --frameTime 1
-  python pacman.py -p ExpectimaxAgent -l trappedClassic -a depth=3 -q -n 10
+```
+bacman_Assignment/
+├── search/                  # Part A — Search (Berkeley Project 1)
+│   ├── search.py            # Q1–Q4: DFS, BFS, UCS, A*
+│   ├── searchAgents.py      # Q5–Q8: Corners, heuristics, greedy agent
+│   └── ...
+├── multiagent/              # Part B — Multi-Agent Search (Berkeley Project 2)
+│   ├── multiAgents.py       # Q2–Q5: Minimax, α-β, Expectimax, evaluation
+│   └── ...
+├── report.pdf               # Scientific report: Tables T1–T5 + analysis (≤2000 words)
+└── README.md
+```
 
-NOTES
-------------------------------------------------------------
-- A* handles inconsistent heuristics via best-g tracking with
-  re-expansion (stale entries skipped), as required by the autograder.
-- foodHeuristic uses an MST lower bound over {position} U remaining food
-  with cached maze distances (food-food computed once, position-food on demand).
-- betterEvaluationFunction: score - 4*food + 10/(d+1) nearest-food reward,
-  ghost cliff penalties (-200 at d<=1, -50 at d=2), +20/(d+1) scared-ghost
-  attraction, -15 per remaining capsule, with +/-inf terminal values.
-- No debug prints remain in the submitted code.
-============================================================
+---
+
+## ✅ Autograder Results
+
+All scores obtained with `python autograder.py --no-graphics` (Berkeley CS188 autograder, sp24).
+
+### Part A — Search
+
+| Question | Topic | Score | Notes |
+|---|---|---|---|
+| Q1 | Depth-First Search | **3/3** | |
+| Q2 | Breadth-First Search | **3/3** | |
+| Q3 | Uniform-Cost Search | **3/3** | |
+| Q4 | A* Search | **3/3** | Handles inconsistent heuristics via best-g re-expansion |
+| Q5 | CornersProblem formulation | **3/3** | State = (position, visited-corner bitmask) |
+| Q6 | cornersHeuristic | **3/3** | 393 expansions vs 1966 (BFS) on mediumCorners |
+| Q7 | foodHeuristic ⭐ | **5/4** *(extra credit)* | **410** expansions on trickySearch (top threshold: 7000; UCS ≈ 170,000) |
+| Q8 | ClosestDotSearchAgent ⭐ | **3/3** | Greedy BFS-to-nearest; fast, near-optimal (cost 68 vs optimal 60) |
+
+⭐ *Bonus questions (+5 points each max)*
+
+### Part B — Multi-Agent Search
+
+| Question | Topic | Score | Notes |
+|---|---|---|---|
+| Q1 | ReflexAgent | — | Warmup (ungraded), left as provided |
+| Q2 | MinimaxAgent | **5/5** | Multi-layer, arbitrary depth |
+| Q3 | AlphaBetaAgent | **5/5** | Identical values to minimax: 9, 8, 7, −492 at depths 1–4 |
+| Q4 | ExpectimaxAgent | **5/5** | Chance nodes — uniform random ghosts |
+| Q5 | betterEvaluationFunction | **6/6** | **10/10 wins, average score 1123.5** on smallClassic |
+
+**Code total: 40/40 + 5 bonus (extra credit on Q7)**
+
+---
+
+## 🔬 Key Experimental Findings (see `report.pdf`)
+
+| Experiment | Headline result |
+|---|---|
+| T1 — Uninformed vs informed | A* expands 549 nodes vs UCS's 620 on bigMaze (identical optimal cost 210) |
+| T2 — Heuristic value | cornersHeuristic: 393 vs 1966 BFS expansions (−80%) at equal cost |
+| T3 — α-β vs minimax | Identical root values at all depths; ~1.8× faster per move (0.034 s vs 0.062 s) |
+| T4 — Opponent modeling | α-β (perfect adversary): 0/10 wins; Expectimax (random): 2/10 wins on trappedClassic |
+| T5 — Evaluation design | 10/10 wins, avg 1123.5 with feature-weighted evaluation function |
+| Bonus — Cost vs optimality | MST heuristic: optimal path 60, 410 expansions; greedy: 13% longer path, near-instant |
+
+---
+
+## 🚀 How to Run
+
+### Setup
+```bash
+# Requires Python 3.x. Unzip each Berkeley project into its OWN folder (do not mix files).
+python pacman.py            # play manually (arrow keys)
+```
+
+### Reproduce autograder scores
+```bash
+# Part A
+cd search
+python autograder.py --no-graphics
+
+# Part B
+cd multiagent
+python autograder.py --no-graphics
+```
+
+### Visual demonstrations
+```bash
+# T1: A* vs UCS on bigMaze — watch the search contours
+python pacman.py -l bigMaze -p SearchAgent -a fn=astar,heuristic=manhattanHeuristic -z .5
+python pacman.py -l bigMaze -p SearchAgent -a fn=ucs -z .5
+
+# T2: corners heuristic
+python pacman.py -l mediumCorners -p AStarCornersAgent -z .5
+
+# Bonus: MST food heuristic & greedy comparison
+python pacman.py -l trickySearch -p AStarFoodSearchAgent -q
+python pacman.py -l trickySearch -p ClosestDotSearchAgent -q
+
+# T3: minimax / alpha-beta thinking on minimaxClassic
+python pacman.py -p MinimaxAgent   -l minimaxClassic -a depth=3 --frameTime 1
+python pacman.py -p AlphaBetaAgent -l minimaxClassic -a depth=3 --frameTime 1
+
+# T4: opponent-modeling showdown on trappedClassic (10 games each)
+python pacman.py -p AlphaBetaAgent -l trappedClassic -a depth=3 -q -n 10
+python pacman.py -p ExpectimaxAgent -l trappedClassic -a depth=3 -q -n 10
+
+# T5: graded evaluation agent
+python autograder.py -q q5 --no-graphics
+```
+
+---
+
+## 🧠 Implementation Notes
+
+- **A\* (Q4):** goal test on dequeue (not on enqueue) + best-g dict with stale-entry skipping → correct under *inconsistent* heuristics, as required by the autograder.
+- **CornersProblem (Q5):** state = `(position, (v₁,v₂,v₃,v₄))` bitmask of visited corners; corners marked on entry; tuples for hashability.
+- **Heuristics:** Manhattan (admissible — walls only add distance); corners = sum of two shortest maze-distance legs; **food = MST over {position} ∪ remaining food** (optimal walk ≥ MST ⇒ admissible); maze distances BFS-computed and cached (`heuristicInfo`: food–food once, position–food on demand).
+- **Adversarial search:** one recursive `value(state, depth, agent)` with agent-index wrap-around; Expectimax replaces `min` with uniform `average` at ghost nodes.
+- **Evaluation function:** `score − 4·food + 10/(d+1)` food reward, ghost cliff penalties (−200 at d≤1, −50 at d=2), `+20/(d+1)` scared-ghost attraction, −15/capsule, ±∞ terminal values.
+
+## 📚 References
+
+1. S. Russell & P. Norvig, *Artificial Intelligence: A Modern Approach*, 4th ed., Pearson, 2021 (ch. 3–5).
+2. UC Berkeley CS188, *Pacman Projects 1 & 2* — http://ai.berkeley.edu
+
+---
+
